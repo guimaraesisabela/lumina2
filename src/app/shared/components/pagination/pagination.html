@@ -1,0 +1,56 @@
+<nav class="pagination" *ngIf="totalPages > 1">
+  <ul class="pagination-list">
+    <li *ngIf="showFirstLast" class="pagination-item">
+      <button
+        class="pagination-button"
+        [disabled]="!hasPrevious"
+        (click)="firstPage()"
+        title="Primeira página">
+        «
+      </button>
+    </li>
+
+    <li class="pagination-item">
+      <button
+        class="pagination-button"
+        [disabled]="!hasPrevious"
+        (click)="previousPage()"
+        title="Página anterior">
+        ‹
+      </button>
+    </li>
+
+    <li *ngFor="let page of visiblePages" class="pagination-item">
+      <button
+        *ngIf="isNumber(page)"
+        class="pagination-button"
+        [class.active]="page === currentPage"
+        (click)="goToPage($any(page))">
+        {{ page }}
+      </button>
+      <span *ngIf="!isNumber(page)" class="pagination-ellipsis">
+        {{ page }}
+      </span>
+    </li>
+
+    <li class="pagination-item">
+      <button
+        class="pagination-button"
+        [disabled]="!hasNext"
+        (click)="nextPage()"
+        title="Próxima página">
+        ›
+      </button>
+    </li>
+
+    <li *ngIf="showFirstLast" class="pagination-item">
+      <button
+        class="pagination-button"
+        [disabled]="!hasNext"
+        (click)="lastPage()"
+        title="Última página">
+        »
+      </button>
+    </li>
+  </ul>
+</nav>
