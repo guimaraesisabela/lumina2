@@ -1,0 +1,104 @@
+<div class="table-container">
+  <div class="table-wrapper">
+    <table class="table" [class.table-hoverable]="hoverable" [class.table-striped]="striped">
+      <thead class="table-header">
+        <tr>
+          <th *ngIf="selectable" class="table-cell table-cell-checkbox">
+            <input
+              type="checkbox"
+              class="checkbox"
+              [checked]="isAllSelected()"
+              [indeterminate]="isIndeterminate()"
+              (change)="toggleSelectAll()"
+            />
+          </th>
+
+          <th
+            *ngFor="let column of columns"
+            class="table-cell"
+            [class.sortable]="column.sortable"
+            [style.width]="column.width"
+            [style.text-align]="column.align || 'left'"
+            (click)="onSort(column)">
+            <div class="table-cell-content">
+              <span>{{ column.label }}</span>
+              <span *ngIf="column.sortable" class="sort-icon material-icons">
+                {{ getSortIcon(column) }}
+              </span>
+            </div>
+          </th>
+
+          <th *ngIf="actions.length > 0" class="table-cell table-cell-actions">
+            Ações
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="table-body">
+        <ng-container *ngIf="!loading && data.length > 0">
+          <tr
+            *ngFor="let row of data; trackBy: trackByIndex"
+            class="table-row"
+            (click)="onRowClick(row)">
+            <td *ngIf="selectable" class="table-cell table-cell-checkbox">
+              <input
+                type="checkbox"
+                class="checkbox"
+                [checked]="isRowSelected(row)"
+                (change)="toggleSelectRow(row)"
+                (click)="$event.stopPropagation()"
+              />
+            </td>
+
+            <td
+              *ngFor="let column of columns"
+              class="table-cell"
+              [style.text-align]="column.align || 'left'">
+              <ng-container *ngIf="column.template; else defaultCell">
+                <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row, value: getCellValue(row, column) }">
+                </ng-container>
+              </ng-container>
+              <ng-template #defaultCell>
+                {{ getCellValue(row, column) }}
+              </ng-template>
+            </td>
+
+            <td *ngIf="actions.length > 0" class="table-cell table-cell-actions">
+              <div class="action-buttons">
+                <button
+                  *ngFor="let action of actions"
+                  class="action-btn"
+                  [class.action-btn-primary]="action.color === 'primary'"
+                  [class.action-btn-secondary]="action.color === 'secondary'"
+                  [class.action-btn-danger]="action.color === 'danger'"
+                  [class.action-btn-success]="action.color === 'success'"
+                  [title]="action.label"
+                  (click)="executeAction(action, row, $event)">
+                  <span class="material-icons">{{ action.icon }}</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+
+        <tr *ngIf="loading" class="table-row-loading">
+          <td [attr.colspan]="columns.length + (selectable ? 1 : 0) + (actions.length > 0 ? 1 : 0)">
+            <div class="loading-container">
+              <div class="spinner"></div>
+              <span>Carregando...</span>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="!loading && data.length === 0" class="table-row-empty">
+          <td [attr.colspan]="columns.length + (selectable ? 1 : 0) + (actions.length > 0 ? 1 : 0)">
+            <div class="empty-container">
+              <span class="material-icons empty-icon">inbox</span>
+              <span class="empty-message">{{ emptyMessage }}</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
