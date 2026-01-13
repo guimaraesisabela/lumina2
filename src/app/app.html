@@ -1,19 +1,7 @@
- <app-nav-menu></app-nav-menu>
-<main class="main">
-  <div class="content">
-    <div class="left-side">
-      <h1>Hello, {{ title() }}</h1>
-      <p>Congratulations! Your app is running. 🎉</p>
-    </div>
-    <div class="divider" role="separator" aria-label="Divider"></div>
-
-<main class="content">
-  <div class="search-container">
-    <app-search-bar
-      placeholder="Buscar por nome, CPF ou email..."
-      [(value)]="searchTerm"
-      (search)="onSearch($event)">
-    </app-search-bar>
-  </div>
-</main>
-<router-outlet />
+<div class="app-container">
+  <app-nav-menu></app-nav-menu>
+  
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
