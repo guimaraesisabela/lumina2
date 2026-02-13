@@ -22,14 +22,14 @@
             (click)="onSort(column)">
             <div class="table-cell-content">
               <span>{{ column.label }}</span>
-              <span *ngIf="column.sortable" class="sort-icon material-icons">
+              <span *ngIf="column.sortable" class="material-icons sort-icon">
                 {{ getSortIcon(column) }}
               </span>
             </div>
           </th>
 
           <th *ngIf="actions.length > 0" class="table-cell table-cell-actions">
-            Ações
+            AÇÕES
           </th>
         </tr>
       </thead>
