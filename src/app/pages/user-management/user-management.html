@@ -1,0 +1,96 @@
+<div class="user-management-page">
+  <div class="page-header">
+    <div class="header-info">
+      <h1 class="page-title">Gerenciar Usuários</h1>
+      <p class="page-description">Administre o acesso e permissões de corretores e administradores.</p>
+    </div>
+
+    <app-button
+      text="Cadastrar Novo Usuário"
+      icon="add"
+      variant="primary"
+      (onClick)="onAddUser()">
+    </app-button>
+  </div>
+
+  <div class="filters-section">
+    <div class="tabs">
+      <button
+        class="tab"
+        [class.tab-active]="activeTab === 'todos'"
+        (click)="setActiveTab('todos')">
+        Todos
+      </button>
+      <button
+        class="tab"
+        [class.tab-active]="activeTab === 'administradores'"
+        (click)="setActiveTab('administradores')">
+        Administradores
+      </button>
+      <button
+        class="tab"
+        [class.tab-active]="activeTab === 'corretores'"
+        (click)="setActiveTab('corretores')">
+        Corretores
+      </button>
+    </div>
+
+    <app-search-bar
+      placeholder="Buscar por nome, CPF ou email..."
+      [(value)]="searchTerm"
+      (search)="onSearch($event)">
+    </app-search-bar>
+  </div>
+
+  <div class="table-card">
+    <app-table
+      [columns]="userColumns"
+      [data]="paginatedUsers"
+      [actions]="userActions"
+      [loading]="loading"
+      [hoverable]="true"
+      emptyMessage="Nenhum usuário encontrado"
+      (rowClick)="onRowClick($event)">
+    </app-table>
+
+    <div class="table-footer">
+      <span class="results-count">{{ displayCount }}</span>
+
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        [maxVisiblePages]="5"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>
+
+<ng-template #nameTemplate let-row>
+  <div class="user-cell">
+    <img [src]="row.avatar" [alt]="row.name" class="user-avatar">
+    <div class="user-info">
+      <span class="user-name">{{ row.name }}</span>
+      <span class="user-id">ID: {{ row.id }}</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #roleTemplate let-row let-value="value">
+  <span 
+    class="role-badge" 
+    [class.role-admin]="value === 'Admin'" 
+    [class.role-broker]="value === 'Corretor'">
+    {{ value }}
+  </span>
+</ng-template>
+
+<ng-template #statusTemplate let-row let-value="value">
+  <span 
+    class="status-badge" 
+    [class.status-active]="value === 'Ativo'" 
+    [class.status-inactive]="value === 'Inativo'">
+    <span class="status-dot"></span>
+    {{ value }}
+  </span>
+</ng-template>

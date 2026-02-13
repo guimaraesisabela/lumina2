@@ -1,5 +1,6 @@
 <div class="search-bar">
-  <span class="search-icon material-icons">search</span>
+  <span class="material-icons search-icon">search</span>
+  
   <input
     type="text"
     class="search-input"
@@ -8,6 +9,7 @@
     (input)="onInput($event)"
     (keypress)="onKeyPress($event)"
   />
+  
   <button 
     *ngIf="value" 
     class="clear-btn" 
