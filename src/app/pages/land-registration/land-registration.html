@@ -1,0 +1,70 @@
+<div class="land-registration">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Cadastro de Loteamentos</h1>
+        <p class="page-subtitle">Gerencie seus empreendimentos, status e disponibilidade.</p>
+      </div>
+      <button class="btn-add" (click)="onAdicionarLoteamento()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Adicionar Loteamento
+      </button>
+    </div>
+  </header>
+
+  <div class="filters-section">
+    <div class="search-bar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <input 
+        type="text" 
+        placeholder="Buscar por nome, cidade ou status..."
+        [(ngModel)]="searchTerm">
+    </div>
+
+    <div class="status-filters">
+      <button 
+        class="filter-btn" 
+        [class.active]="selectedStatus === 'todos'"
+        (click)="onStatusFilterChange('todos')">
+        Todos
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="selectedStatus === 'em-lancamento'"
+        (click)="onStatusFilterChange('em-lancamento')">
+        Em lançamento
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="selectedStatus === 'ativo'"
+        (click)="onStatusFilterChange('ativo')">
+        Ativos
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="selectedStatus === 'concluido'"
+        (click)="onStatusFilterChange('concluido')">
+        Concluídos
+      </button>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+    <app-loteamento-card
+      *ngFor="let loteamento of filteredLoteamentos"
+      [loteamento]="loteamento"
+      (gerenciarClick)="onGerenciar($event)">
+    </app-loteamento-card>
+
+    <app-loteamento-card
+      [isNewCard]="true"
+      (novoLoteamentoClick)="onNovoLoteamento()">
+    </app-loteamento-card>
+  </div>
+</div>

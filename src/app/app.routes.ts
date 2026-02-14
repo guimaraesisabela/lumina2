@@ -12,6 +12,11 @@ export const routes: Routes = [
       import('./pages/user-management/user-management').then(m => m.UserManagementComponent)
   },
   {
+    path: 'loteamentos',
+    loadComponent: () => 
+      import('./pages/land-registration/land-registration').then(m => m.LandRegistrationComponent)
+  },
+  {
     path: '**',
     redirectTo: '/usuarios'
   }

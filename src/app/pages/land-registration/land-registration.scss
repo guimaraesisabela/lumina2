@@ -1,0 +1,180 @@
+.land-registration {
+  padding: 32px 48px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 40px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.page-title {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #4a6f5c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: #3d5a4a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 111, 92, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.filters-section {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+
+  svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #1f2937;
+    background: white;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #4a6f5c;
+      box-shadow: 0 0 0 3px rgba(74, 111, 92, 0.1);
+    }
+  }
+}
+
+.status-filters {
+  display: flex;
+  gap: 8px;
+  background: #f9fafb;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    color: #374151;
+    background: #f3f4f6;
+  }
+
+  &.active {
+    background: #4a6f5c;
+    color: white;
+
+    &:hover {
+      background: #3d5a4a;
+    }
+  }
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .land-registration {
+    padding: 24px 16px;
+  }
+
+  .header-content {
+    flex-direction: column;
+  }
+
+  .btn-add {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filters-section {
+    flex-direction: column;
+  }
+
+  .search-bar {
+    min-width: 100%;
+  }
+
+  .status-filters {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
