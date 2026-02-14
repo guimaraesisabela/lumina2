@@ -16,7 +16,7 @@ interface MenuItem {
 })
 export class NavMenuComponent {
   menuItems: MenuItem[] = [
-    { label: 'Dashboard', route: '/dashboard' },
+    { label: 'Mapas', route: '/mapas' },
     { label: 'Loteamentos', route: '/loteamentos' },
     { label: 'Usuários', route: '/usuarios' },
     { label: 'Financeiro', route: '/financeiro' },
