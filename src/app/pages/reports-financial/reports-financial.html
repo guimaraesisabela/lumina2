@@ -1,0 +1,145 @@
+<div class="reports-financial">
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Relatórios e Financeiro</h1>
+      <p class="page-subtitle">Gestão integrada de desempenho e saúde financeira.</p>
+    </div>
+    <div class="header-right">
+      <div class="month-selector">
+        <span class="material-icons">calendar_today</span>
+        <span>{{ mesAtual }}</span>
+      </div>
+      <button class="btn-export" (click)="onExportarPDF()">
+        <span class="material-icons">download</span>
+        Exportar PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="revenue-card">
+    <div class="revenue-icon">
+      <span class="material-icons">payments</span>
+    </div>
+    <div class="revenue-info">
+      <p class="revenue-label">VALOR TOTAL A RECEBER</p>
+      <h2 class="revenue-value">{{ formatCurrency(valorTotalReceber) }}</h2>
+    </div>
+    <div class="revenue-change">
+      <span class="material-icons">trending_up</span>
+      <span>+{{ variacao }}% vs mês anterior</span>
+    </div>
+  </div>
+
+  <div class="vencimentos-section">
+    <div class="vencimentos-table">
+      <div class="table-header">
+        <div class="table-cell">VENCIMENTO</div>
+        <div class="table-cell">CLIENTE</div>
+        <div class="table-cell">LOTE/QUADRA</div>
+        <div class="table-cell">EMPREENDIMENTO</div>
+        <div class="table-cell text-right">VALOR</div>
+      </div>
+      <div class="table-row" *ngFor="let vencimento of vencimentos">
+        <div class="table-cell">{{ formatDate(vencimento.data) }}</div>
+        <div class="table-cell">{{ vencimento.cliente }}</div>
+        <div class="table-cell">{{ vencimento.lote }}</div>
+        <div class="table-cell">{{ vencimento.empreendimento }}</div>
+        <div class="table-cell text-right">{{ formatCurrency(vencimento.valor) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="resumo-vendas-section">
+      <div class="section-header">
+        <div class="section-title-row">
+          <span class="material-icons">receipt_long</span>
+          <h3 class="section-title">Resumo de Vendas</h3>
+        </div>
+        <button class="link-button" (click)="onVerRelatorioCompleto()">
+          VER RELATÓRIO COMPLETO
+        </button>
+      </div>
+
+      <div class="resumo-table">
+        <div class="table-header">
+          <div class="table-cell">EMPREENDIMENTO</div>
+          <div class="table-cell">QUADRA/LOTE</div>
+          <div class="table-cell">CLIENTE</div>
+          <div class="table-cell text-right">VALOR A RECEBER</div>
+        </div>
+        <div class="table-row" *ngFor="let venda of resumoVendas">
+          <div class="table-cell">{{ venda.empreendimento }}</div>
+          <div class="table-cell">{{ venda.quadraLote }}</div>
+          <div class="table-cell">{{ venda.cliente }}</div>
+          <div class="table-cell text-right">{{ formatCurrency(venda.valor) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="estoque-section">
+      <div class="section-header">
+        <div class="section-title-row">
+          <span class="material-icons">inventory_2</span>
+          <h3 class="section-title">Disponibilidade de Estoque</h3>
+        </div>
+      </div>
+
+      <div class="estoque-list">
+        <div class="estoque-item" *ngFor="let estoque of estoques">
+          <div class="estoque-header">
+            <span class="estoque-name">{{ estoque.empreendimento }}</span>
+            <span class="estoque-count">{{ estoque.disponiveis }} / {{ estoque.total }}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getEstoquePercentage(estoque)"></div>
+          </div>
+          <p class="estoque-label">{{ estoque.disponiveis }} LOTES DISPONÍVEIS</p>
+        </div>
+      </div>
+
+      <button class="btn-mapa" (click)="onMapaDisponibilidade()">
+        <span class="material-icons">map</span>
+        MAPA DE DISPONIBILIDADE
+      </button>
+    </div>
+  </div>
+
+  <div class="inadimplencias-section">
+    <div class="section-header">
+      <div class="section-title-row">
+        <span class="material-icons warning">warning</span>
+        <h3 class="section-title">Inadimplências</h3>
+      </div>
+    </div>
+
+    <div class="inadimplencias-table">
+      <div class="table-header">
+        <div class="table-cell">DIAS DE ATRASO</div>
+        <div class="table-cell">CLIENTE</div>
+        <div class="table-cell">LOTE</div>
+        <div class="table-cell text-right">VALOR EM ABERTO</div>
+        <div class="table-cell text-center">AÇÕES</div>
+      </div>
+      <div class="table-row" *ngFor="let inadimplencia of inadimplencias">
+        <div class="table-cell">
+          <span class="dias-badge" [ngClass]="getDiasAtrasoBadgeClass(inadimplencia.diasAtraso)">
+            {{ inadimplencia.diasAtraso }} DIAS
+          </span>
+        </div>
+        <div class="table-cell">{{ inadimplencia.cliente }}</div>
+        <div class="table-cell">{{ inadimplencia.lote }}</div>
+        <div class="table-cell text-right valor-destaque">{{ formatCurrency(inadimplencia.valorAberto) }}</div>
+        <div class="table-cell text-center">
+          <button class="btn-action" (click)="onNotificarCliente(inadimplencia)">
+            <span class="material-icons">notifications</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p class="inadimplencias-footer">
+      Total de 28 registros em atraso encontrados no sistema.
+    </p>
+  </div>
+</div>
