@@ -20,6 +20,7 @@ export class NavMenuComponent {
     { label: 'Loteamentos', route: '/loteamentos' },
     { label: 'Usuários', route: '/usuarios' },
     { label: 'Financeiro', route: '/financeiro' },
+    { label: 'Vendas', route: '/vendas' },
     { label: 'Configurações', route: '/configuracoes' }
   ];
 }

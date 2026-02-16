@@ -16,10 +16,15 @@ export const routes: Routes = [
     loadComponent: () => 
       import('./pages/land-registration/land-registration').then(m => m.LandRegistrationComponent)
   },
-    {
+  {
     path: 'mapas',
     loadComponent: () => 
       import('./pages/land-maps/land-maps').then(m => m.LandMapsComponent)
+  },
+  {
+    path: 'vendas',
+    loadComponent: () => 
+      import('./pages/sales-register/sales-register').then(m => m.SalesRegisterComponent)
   },
   {
     path: '**',

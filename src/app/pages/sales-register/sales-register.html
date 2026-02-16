@@ -1,0 +1,257 @@
+<div class="sales-register">
+  <div class="breadcrumb">
+    <span class="material-icons">home</span>
+    <a routerLink="/vendas" class="breadcrumb-link">Vendas</a>
+    <span class="breadcrumb-separator">›</span>
+    <span class="breadcrumb-current">Registrar Venda</span>
+  </div>
+
+  <div class="page-header">
+    <h1 class="page-title">Registrar Venda</h1>
+    <p class="page-subtitle">Formalize a transação imobiliária preenchendo os dados técnicos e financeiros abaixo.</p>
+  </div>
+
+  <div class="content-grid">
+    <div class="left-column">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">person</span>
+          <h2 class="section-title">Dados do Cliente</h2>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nome completo</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Nome completo do comprador"
+            [(ngModel)]="cliente.nome">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">CPF / CNPJ</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              placeholder="000.000.000-00"
+              [(ngModel)]="cliente.cpfCnpj">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Telefone</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              placeholder="(00)00000-0000"
+              [(ngModel)]="cliente.telefone">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input 
+            type="email" 
+            class="form-input" 
+            placeholder="email@exemplo.com.br"
+            [(ngModel)]="cliente.email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Endereço Completo</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Rua, número, bairro e cidade"
+            [(ngModel)]="cliente.endereco">
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">map</span>
+          <h2 class="section-title">Dados do Lote</h2>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Loteamento</label>
+          <select class="form-select" [(ngModel)]="dadosLote.loteamento">
+            <option value="" disabled selected>Selecione o loteamento</option>
+            <option *ngFor="let loteamento of loteamentos" [value]="loteamento">
+              {{ loteamento }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">Quadra</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              placeholder="Ex: B"
+              [(ngModel)]="dadosLote.quadra">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Número do Lote</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              placeholder="Ex: 15"
+              [(ngModel)]="dadosLote.numeroLote">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Área (m²)</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              placeholder="360"
+              [(ngModel)]="dadosLote.area">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Valor Total do Lote (R$)</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="185.000,00"
+            [(ngModel)]="dadosLote.valorTotal">
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">credit_card</span>
+          <h2 class="section-title">Pagamento</h2>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tipo de Pagamento</label>
+          <div class="radio-group">
+            <label class="radio-option" [class.active]="pagamento.tipo === 'parcelado'">
+              <input 
+                type="radio" 
+                name="paymentType" 
+                value="parcelado"
+                [(ngModel)]="pagamento.tipo">
+              <span class="radio-label">PARCELADO</span>
+            </label>
+
+            <label class="radio-option" [class.active]="pagamento.tipo === 'avista'">
+              <input 
+                type="radio" 
+                name="paymentType" 
+                value="avista"
+                [(ngModel)]="pagamento.tipo">
+              <span class="radio-label">À VISTA</span>
+            </label>
+
+            <label class="radio-option" [class.active]="pagamento.tipo === 'financiamento'">
+              <input 
+                type="radio" 
+                name="paymentType" 
+                value="financiamento"
+                [(ngModel)]="pagamento.tipo">
+              <span class="radio-label">FINANCIAMENTO</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Entrada (R$)</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              placeholder="25.000,00"
+              [(ngModel)]="pagamento.entrada">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Parcelamento</label>
+            <select class="form-select" [(ngModel)]="pagamento.parcelamento">
+              <option value="" disabled selected>Selecione</option>
+              <option *ngFor="let parcela of parcelamentos" [value]="parcela">
+                {{ parcela }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-column">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">real_estate_agent</span>
+          <h2 class="section-title">Corretor</h2>
+        </div>
+
+        <div class="corretor-info">
+          <label class="form-label">Corretor Responsável</label>
+          <div class="corretor-card">
+            <img [src]="corretor.avatarUrl" [alt]="corretor.nome" class="corretor-avatar">
+            <div class="corretor-details">
+              <p class="corretor-nome">{{ corretor.nome }}</p>
+              <p class="corretor-creci">{{ corretor.creci }}</p>
+            </div>
+            <button class="btn-icon" (click)="onEditarCorretor()">
+              <span class="material-icons">edit</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card summary-card">
+        <div class="section-header">
+          <span class="material-icons">receipt_long</span>
+          <h2 class="section-title">Resumo da Proposta</h2>
+        </div>
+
+        <div class="summary-content">
+          <div class="summary-row">
+            <span class="summary-label">Valor Base</span>
+            <span class="summary-value">{{ formatCurrency(valorBase) }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Entrada</span>
+            <span class="summary-value negative">- {{ formatCurrency(entrada) }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Financiado</span>
+            <span class="summary-value">{{ formatCurrency(valorFinanciado) }}</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span class="total-label">VALOR MENSAL ESTIMADO</span>
+            <span class="total-value">{{ formatCurrency(valorMensalEstimado) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-section">
+        <button class="btn-primary" (click)="onConfirmarVenda()">
+          <span class="material-icons">check_circle</span>
+          Confirmar Venda
+        </button>
+
+        <button class="btn-secondary" (click)="onGerarContrato()">
+          <span class="material-icons">description</span>
+          Gerar Contrato (PDF)
+        </button>
+
+        <button class="btn-text" (click)="onSalvarSimulacao()">
+          <span class="material-icons">save</span>
+          Salvar como Simulação
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
