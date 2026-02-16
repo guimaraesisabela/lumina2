@@ -5,6 +5,8 @@ import { SearchBarComponent } from '../../shared/components/search-bar/search-ba
 import { ButtonComponent } from '../../shared/components/button/button';
 import { TableComponent, TableColumn, TableAction } from '../../shared/components/table/table';
 import { PaginationComponent } from '../../shared/components/pagination/pagination';
+import { ModalComponent } from '../../shared/components/modal/modal';
+import { DropdownComponent, DropdownOption } from '../../shared/components/dropdown/dropdown';
 
 interface User {
   id: string;
@@ -16,10 +18,28 @@ interface User {
   status: 'Ativo' | 'Inativo';
 }
 
+interface NewUserForm {
+  firstName: string;
+  lastName: string;
+  role: string;
+  email: string;
+  phone: string;
+  document: string;
+}
+
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, SearchBarComponent, ButtonComponent, TableComponent, PaginationComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SearchBarComponent,
+    ButtonComponent,
+    TableComponent,
+    PaginationComponent,
+    ModalComponent,
+    DropdownComponent
+  ],
   templateUrl: './user-management.html',
   styleUrls: ['./user-management.scss']
 })
@@ -29,6 +49,21 @@ export class UserManagementComponent implements AfterViewInit {
   currentPage: number = 1;
   itemsPerPage: number = 5;
   activeTab: string = 'todos';
+  isModalOpen: boolean = false;
+
+  newUser: NewUserForm = {
+    firstName: '',
+    lastName: '',
+    role: '',
+    email: '',
+    phone: '',
+    document: ''
+  };
+
+  roleOptions: DropdownOption[] = [
+    { label: 'Administrador', value: 'admin' },
+    { label: 'Corretor', value: 'corretor' }
+  ];
 
   @ViewChild('nameTemplate') nameTemplate!: TemplateRef<any>;
   @ViewChild('roleTemplate') roleTemplate!: TemplateRef<any>;
@@ -159,7 +194,32 @@ export class UserManagementComponent implements AfterViewInit {
   }
 
   onAddUser(): void {
-    console.log('Adicionar novo usuário');
+    this.isModalOpen = true;
+  }
+
+  onCloseModal(): void {
+    this.isModalOpen = false;
+    this.resetForm();
+  }
+
+  onRoleChange(value: any): void {
+    this.newUser.role = value;
+  }
+
+  onSubmitNewUser(): void {
+    console.log('Novo usuário:', this.newUser);
+    this.onCloseModal();
+  }
+
+  resetForm(): void {
+    this.newUser = {
+      firstName: '',
+      lastName: '',
+      role: '',
+      email: '',
+      phone: '',
+      document: ''
+    };
   }
 
   onSearch(term: string): void {
