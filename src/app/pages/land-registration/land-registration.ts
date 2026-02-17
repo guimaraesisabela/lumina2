@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoteamentoCardComponent, Loteamento } from '../../shared/components/loteamento-card/loteamento-card';
 
 type StatusFilter = 'todos' | 'ativo' | 'em-lancamento' | 'concluido';
@@ -69,6 +70,8 @@ export class LandRegistrationComponent {
     }
   ];
 
+  constructor(private router: Router) {}
+
   get filteredLoteamentos(): Loteamento[] {
     return this.loteamentos.filter(loteamento => {
       const matchesSearch = !this.searchTerm || 
@@ -91,7 +94,7 @@ export class LandRegistrationComponent {
   }
 
   onGerenciar(id: string): void {
-    console.log('Gerenciar loteamento:', id);
+    this.router.navigate(['/loteamentos', id, 'management']);
   }
 
   onNovoLoteamento(): void {
