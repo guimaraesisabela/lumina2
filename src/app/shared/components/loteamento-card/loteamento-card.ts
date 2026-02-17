@@ -17,7 +17,7 @@ export interface Loteamento {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './loteamento-card.html',
-  styleUrl: './loteamento-card.scss'
+  styleUrl: './loteamento-card.scss',
 })
 export class LoteamentoCardComponent {
   @Input() loteamento!: Loteamento;
@@ -35,9 +35,9 @@ export class LoteamentoCardComponent {
 
   getStatusLabel(): string {
     const statusMap = {
-      'ativo': 'Ativo',
+      ativo: 'Ativo',
       'em-lancamento': 'Em lançamento',
-      'concluido': 'Concluído'
+      concluido: 'Concluído',
     };
     return statusMap[this.loteamento?.status] || '';
   }

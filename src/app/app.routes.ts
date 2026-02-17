@@ -35,6 +35,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'loteamentos/:id/management',
+    loadComponent: () =>
+      import('./pages/land-management/land-management').then((m) => m.LandManagementComponent),
+  },
+  {
     path: '**',
     redirectTo: '/usuarios',
   },

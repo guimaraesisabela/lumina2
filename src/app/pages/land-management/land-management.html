@@ -1,0 +1,35 @@
+<div class="land-management">
+  <div class="top-bar">
+    <button class="btn-back" (click)="onVoltarProjetos()" routerLink="/loteamentos">
+      <span class="material-icons">arrow_back</span>
+      Voltar aos loteamentos
+    </button>
+  </div>
+
+  <div class="hero-section">
+    <span class="status-badge">GESTÃO ATIVA</span>
+    <h1 class="hero-title">{{ loteamentoNome }}</h1>
+    <p class="hero-subtitle">
+      Selecione uma área abaixo para gerenciar o loteamento, acompanhar vendas ou acessar a documentação técnica.
+    </p>
+  </div>
+
+  <div class="options-grid">
+    <div class="option-card" *ngFor="let option of options">
+      <div class="option-icon">
+        <span class="material-icons">{{ option.icon }}</span>
+      </div>
+      <h3 class="option-title">{{ option.title }}</h3>
+      <p class="option-description">{{ option.description }}</p>
+      <button class="btn-action" [routerLink]="option.route">
+        {{ option.buttonText }}
+        <span class="material-icons">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-info">
+    <span class="material-icons">schedule</span>
+    <span>Última atualização: {{ ultimaAtualizacao }}</span>
+  </div>
+</div>
