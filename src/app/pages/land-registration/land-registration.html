@@ -4,14 +4,7 @@
       <div class="header-text">
         <h1 class="page-title">Cadastro de Loteamentos</h1>
         <p class="page-subtitle">Gerencie seus empreendimentos, status e disponibilidade.</p>
-      </div>
-      <button class="btn-add" (click)="onAdicionarLoteamento()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-        Adicionar Loteamento
-      </button>
+      </div>  
     </div>
   </header>
 
@@ -56,11 +49,16 @@
   </div>
 
   <div class="cards-grid">
-    <app-loteamento-card
-      *ngFor="let loteamento of filteredLoteamentos"
-      [loteamento]="loteamento"
-      (gerenciarClick)="onGerenciar($event)">
-    </app-loteamento-card>
+    <div class="card-wrapper" *ngFor="let loteamento of filteredLoteamentos">
+      <app-loteamento-card
+        [loteamento]="loteamento"
+        (gerenciarClick)="onGerenciar($event)">
+      </app-loteamento-card>
+      <button class="btn-edit-card" (click)="onEditarLoteamento(loteamento.id)">
+        <span class="material-icons">edit</span>
+        Editar
+      </button>
+    </div>
 
     <app-loteamento-card
       [isNewCard]="true"
@@ -68,3 +66,110 @@
     </app-loteamento-card>
   </div>
 </div>
+
+<app-modal
+  [isOpen]="isModalOpen"
+  [title]="modalTitle"
+  [size]="'large'"
+  (close)="onCloseModal()">
+  
+  <div class="modal-edit-content" *ngIf="loteamentoEdit">
+    <p class="modal-subtitle">GESTÃO INTERNA DE LOTEAMENTO</p>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <label class="stat-label">NOME DO LOTEAMENTO</label>
+        <input 
+          type="text" 
+          class="stat-input" 
+          placeholder="Nome do empreendimento"
+          [(ngModel)]="loteamentoEdit.nome">
+      </div>
+
+      <div class="stat-item">
+        <label class="stat-label">TOTAL QUADRAS</label>
+        <input 
+          type="number" 
+          class="stat-input" 
+          [(ngModel)]="loteamentoEdit.quadras">
+      </div>
+
+      <div class="stat-item">
+        <label class="stat-label">TOTAL LOTES</label>
+        <input 
+          type="number" 
+          class="stat-input" 
+          [(ngModel)]="loteamentoEdit.lotes">
+      </div>
+
+      <div class="stat-item">
+        <label class="stat-label">ÁREA TOTAL</label>
+        <div class="input-with-unit">
+          <input 
+            type="number" 
+            class="stat-input" 
+            [(ngModel)]="loteamentoEdit.areaTotal">
+          <span class="unit">m²</span>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <label class="stat-label">CIDADE</label>
+        <input 
+          type="text" 
+          class="stat-input" 
+          placeholder="Cidade"
+          [(ngModel)]="loteamentoEdit.cidade">
+      </div>
+
+      <div class="stat-item">
+        <label class="stat-label">ESTADO</label>
+        <input 
+          type="text" 
+          class="stat-input" 
+          placeholder="UF"
+          maxlength="2"
+          [(ngModel)]="loteamentoEdit.estado">
+      </div>
+
+      <div class="stat-item">
+        <label class="stat-label">STATUS</label>
+        <select class="stat-select" [(ngModel)]="loteamentoEdit.status">
+          <option value="ativo">EM APROVAÇÃO</option>
+          <option value="em-lancamento">EM LANÇAMENTO</option>
+          <option value="concluido">CONCLUÍDO</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label class="section-label">LOCALIZAÇÃO</label>
+      <textarea 
+        class="location-textarea" 
+        rows="2"
+        placeholder="Rua, número, bairro - Cidade - UF, CEP"
+        [(ngModel)]="loteamentoEdit.endereco"></textarea>
+    </div>
+
+    <div class="form-section">
+      <label class="section-label">DOCUMENTOS ANEXADOS</label>
+      <div class="documents-list">
+        <div class="document-row" *ngFor="let doc of loteamentoEdit.documentos">
+          <span class="document-name">{{ doc.nome }}</span>
+          <div class="document-actions">
+            <button class="btn-doc-action" (click)="onVisualizarDoc(doc)">VISUALIZAR</button>
+            <button class="btn-doc-action" (click)="onBaixarDoc(doc)">BAIXAR</button>
+          </div>
+        </div>
+        <p class="no-documents" *ngIf="loteamentoEdit.documentos.length === 0">
+          Nenhum documento anexado
+        </p>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-modal-secondary" (click)="onCloseModal()">FECHAR</button>
+      <button class="btn-modal-primary" (click)="onSaveModal()">{{ buttonSaveText }}</button>
+    </div>
+  </div>
+</app-modal>
