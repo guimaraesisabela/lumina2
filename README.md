@@ -1,22 +1,25 @@
-# Lotiva 🏘️
+# Lumina 🎬🎵
 
-Sistema web de gestão de loteamentos, desenvolvido para facilitar o controle de vendas, cadastro de corretores, geração automática de contratos e acompanhamento financeiro de empreendimentos imobiliários.
+Sistema web de gestão para espaços culturais independentes, desenvolvido para centralizar o controle de eventos, sessões de cinema, shows ao vivo, artistas, salas e ingressos em uma única plataforma.
 
 ---
 
 ## Sobre o projeto
 
-O Lotiva nasceu da necessidade de centralizar e digitalizar a gestão de loteamentos em uma única plataforma. Com ele, administradores e corretores conseguem acompanhar o status de cada lote, registrar vendas, gerar contratos automaticamente e monitorar a saúde financeira dos empreendimentos em tempo real.
+Espaços culturais independentes costumam gerenciar suas operações de forma fragmentada — planilhas, cadernos, sistemas diferentes para cada área. O Lumina nasce pra resolver isso.
+
+Com ele, a equipe de um espaço cultural consegue cadastrar e organizar suas salas, programar sessões de cinema e shows, controlar a venda de ingressos e acompanhar a performance de cada evento, tudo em um só lugar.
 
 ---
 
 ## Funcionalidades
 
-- **Gestão de Usuários** — cadastro e controle de administradores e corretores, com perfis de acesso diferenciados
-- **Gestão de Loteamentos** — cadastro de empreendimentos com informações completas, documentos anexados e controle de status
-- **Mapa de Lotes** — visualização interativa da disponibilidade de lotes por quadra e empreendimento
-- **Registro de Vendas** — fluxo completo de venda com simulação de financiamento, parcelamento e geração de contrato
-- **Relatórios Financeiros** — painel com vencimentos próximos, resumo de vendas, estoque por empreendimento e controle de inadimplência
+- **Gestão de Usuários** — cadastro e controle de administradores e organizadores de eventos, com perfis de acesso diferenciados
+- **Gestão de Espaços** — cadastro de salas e ambientes do espaço cultural, com capacidade, tipo e status
+- **Programação de Eventos** — cadastro de sessões de cinema e shows ao vivo, com data, horário, capacidade e valor do ingresso
+- **Gestão de Atrações** — cadastro de filmes e artistas/bandas vinculados aos eventos
+- **Controle de Ingressos** — venda e controle de ocupação por evento, com atualização automática de disponibilidade
+- **Relatórios** — eventos mais populares, receita por tipo de evento e ocupação das salas
 
 ---
 
@@ -39,28 +42,20 @@ O Lotiva nasceu da necessidade de centralizar e digitalizar a gestão de loteame
 ## Estrutura do projeto
 
 ```
-lotiva/
+lumina/
 ├── src/                        # Front-end Angular
 │   └── app/
 │       ├── pages/
 │       │   ├── user-management/        # Gestão de usuários
-│       │   ├── land-registration/      # Cadastro de loteamentos
-│       │   ├── land-management/        # Hub de gestão do loteamento
-│       │   ├── land-maps/              # Mapa de lotes
-│       │   ├── sales-register/         # Registro de vendas
-│       │   └── reports-financial/      # Relatórios financeiros
+│       │   ├── espacos/                # Cadastro de salas e espaços
+│       │   ├── eventos/                # Programação de eventos
+│       │   ├── atracoes/               # Filmes e artistas
+│       │   ├── ingressos/              # Controle de ingressos
+│       │   └── reports/                # Relatórios
 │       └── shared/
 │           └── components/             # Componentes reutilizáveis
-│               ├── button/
-│               ├── dropdown/
-│               ├── loteamento-card/
-│               ├── modal/
-│               ├── nav-menu/
-│               ├── pagination/
-│               ├── search-bar/
-│               └── table/
 │
-└── lotiva-back/                # Back-end Node.js
+└── lumina-back/                # Back-end Node.js
     ├── config/
     │   └── db.js               # Configuração da conexão com MongoDB
     ├── src/
@@ -89,8 +84,8 @@ lotiva/
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/guimaraesisabela/lotiva.git
-cd lotiva
+git clone https://github.com/guimaraesisabela/lumina.git
+cd lumina
 ```
 
 ### 2. Front-end
@@ -105,15 +100,15 @@ O front estará disponível em `http://localhost:4200`
 ### 3. Back-end
 
 ```bash
-cd lotiva-back
+cd lumina-back
 npm install
 ```
 
-Crie o arquivo `.env` na raiz do `lotiva-back` com o seguinte conteúdo:
+Crie o arquivo `.env` na raiz do `lumina-back` com o seguinte conteúdo:
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/lotiva
+MONGODB_URI=mongodb://localhost:27017/lumina
 JWT_SECRET=sua_chave_secreta_aqui
 ```
 
@@ -149,7 +144,33 @@ A API estará disponível em `http://localhost:3000`
 | PUT | `/usuarios/:id` | Edita usuário | Admin |
 | PATCH | `/usuarios/:id/desativar` | Desativa usuário | Admin |
 
-> Rotas em desenvolvimento: loteamentos, lotes, vendas, clientes, contratos e relatórios financeiros.
+### Espaços
+| Método | Rota | Descrição | Acesso |
+|--------|------|-----------|--------|
+| GET | `/espacos` | Lista todos os espaços | Autenticado |
+| GET | `/espacos/:id` | Busca espaço por ID | Autenticado |
+| POST | `/espacos` | Cria novo espaço | Admin |
+| PUT | `/espacos/:id` | Edita espaço | Admin |
+| DELETE | `/espacos/:id` | Remove espaço | Admin |
+
+### Eventos
+| Método | Rota | Descrição | Acesso |
+|--------|------|-----------|--------|
+| GET | `/eventos` | Lista todos os eventos | Autenticado |
+| GET | `/eventos/:id` | Busca evento por ID | Autenticado |
+| GET | `/espacos/:id/eventos` | Lista eventos de um espaço | Autenticado |
+| POST | `/eventos` | Cria novo evento | Admin |
+| PUT | `/eventos/:id` | Edita evento | Admin |
+| PATCH | `/eventos/:id/status` | Atualiza status do evento | Admin |
+
+### Ingressos
+| Método | Rota | Descrição | Acesso |
+|--------|------|-----------|--------|
+| GET | `/ingressos` | Lista ingressos | Autenticado |
+| POST | `/ingressos` | Registra venda de ingresso | Admin, Organizador |
+| PATCH | `/ingressos/:id/cancelar` | Cancela ingresso | Admin |
+
+> Endpoints de atrações e relatórios em desenvolvimento.
 
 ---
 
@@ -157,8 +178,8 @@ A API estará disponível em `http://localhost:3000`
 
 | Perfil | Permissões |
 |--------|-----------|
-| `admin` | Acesso total — gerencia usuários, loteamentos, lotes, vendas e relatórios |
-| `corretor` | Acesso parcial — registra vendas e gerencia clientes |
+| `admin` | Acesso total — gerencia usuários, espaços, eventos, atrações e relatórios |
+| `organizador` | Acesso parcial — programa eventos e controla ingressos |
 
 ---
 
@@ -178,7 +199,7 @@ Após rodar o `seed.js`, os seguintes usuários estarão disponíveis:
 
 | Nome | Email | Senha | Perfil |
 |------|-------|-------|--------|
-| Carlos Silva | carlos@lotiva.com | 123456 | Admin |
-| Fernanda Costa | fernanda@lotiva.com | 123456 | Corretor |
+| Carlos Silva | carlos@lumina.com | 123456 | Admin |
+| Fernanda Costa | fernanda@lumina.com | 123456 | Organizador |
 
 > ⚠️ Altere as senhas em ambiente de produção.
