@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./src/routes/auth.routes');
 const usersRoutes = require('./src/routes/users.routes');
+const loteamentosRoutes = require('./src/routes/loteamentos.routes');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/usuarios', usersRoutes);
+app.use('/loteamentos', loteamentosRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Lotiva API rodando!' });
