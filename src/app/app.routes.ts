@@ -3,8 +3,28 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/usuarios',
+    redirectTo: '/eventos',
     pathMatch: 'full',
+  },
+  {
+    path: 'eventos',
+    loadComponent: () =>
+      import('./pages/eventos/eventos').then((m) => m.EventosComponent),
+  },
+  {
+    path: 'espacos',
+    loadComponent: () =>
+      import('./pages/espacos/espacos').then((m) => m.EspacosComponent),
+  },
+  {
+    path: 'atracoes',
+    loadComponent: () =>
+      import('./pages/atracoes/atracoes').then((m) => m.AtracoesComponent),
+  },
+  {
+    path: 'ingressos',
+    loadComponent: () =>
+      import('./pages/ingressos/ingressos').then((m) => m.IngressosComponent),
   },
   {
     path: 'usuarios',
@@ -12,35 +32,12 @@ export const routes: Routes = [
       import('./pages/user-management/user-management').then((m) => m.UserManagementComponent),
   },
   {
-    path: 'loteamentos',
+    path: 'relatorios',
     loadComponent: () =>
-      import('./pages/land-registration/land-registration').then(
-        (m) => m.LandRegistrationComponent,
-      ),
-  },
-  {
-    path: 'mapas',
-    loadComponent: () => import('./pages/land-maps/land-maps').then((m) => m.LandMapsComponent),
-  },
-  {
-    path: 'vendas',
-    loadComponent: () =>
-      import('./pages/sales-register/sales-register').then((m) => m.SalesRegisterComponent),
-  },
-  {
-    path: 'relatorios-financeiros',
-    loadComponent: () =>
-      import('./pages/reports-financial/reports-financial').then(
-        (m) => m.ReportsFinancialComponent,
-      ),
-  },
-  {
-    path: 'loteamentos/:id/management',
-    loadComponent: () =>
-      import('./pages/land-management/land-management').then((m) => m.LandManagementComponent),
+      import('./pages/relatorios/relatorios').then((m) => m.RelatoriosComponent),
   },
   {
     path: '**',
-    redirectTo: '/usuarios',
+    redirectTo: '/eventos',
   },
 ];
