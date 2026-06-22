@@ -1,178 +1,138 @@
-<div class="user-management-page">
+<div class="usuarios-container">
   <div class="page-header">
-    <div class="header-info">
-      <h1 class="page-title">Gerenciar Usuários</h1>
-      <p class="page-description">Administre o acesso e permissões de corretores e administradores.</p>
-    </div>
-
-    <app-button
-      text="Cadastrar Novo Usuário"
-      icon="add"
-      variant="primary"
-      (onClick)="onAddUser()">
-    </app-button>
+    <h1 class="page-title">Usuários</h1>
+    <button class="btn-primary" (click)="onAddUser()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Novo Usuário
+    </button>
   </div>
 
-  <div class="filters-section">
-    <div class="tabs">
-      <button
-        class="tab"
-        [class.tab-active]="activeTab === 'todos'"
-        (click)="setActiveTab('todos')">
-        Todos
-      </button>
-      <button
-        class="tab"
-        [class.tab-active]="activeTab === 'administradores'"
-        (click)="setActiveTab('administradores')">
-        Administradores
-      </button>
-      <button
-        class="tab"
-        [class.tab-active]="activeTab === 'corretores'"
-        (click)="setActiveTab('corretores')">
-        Corretores
-      </button>
+  <div class="filters-row">
+    <div class="filters">
+      <button class="filter-btn" [class.active]="activeTab === 'todos'" (click)="setActiveTab('todos')">Todos</button>
+      <button class="filter-btn" [class.active]="activeTab === 'administradores'" (click)="setActiveTab('administradores')">Administradores</button>
+      <button class="filter-btn" [class.active]="activeTab === 'organizadores'" (click)="setActiveTab('organizadores')">Organizadores</button>
     </div>
-
-    <app-search-bar
-      placeholder="Buscar por nome, CPF ou email..."
-      [(value)]="searchTerm"
-      (search)="onSearch($event)">
-    </app-search-bar>
+    <div class="search-box">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Buscar por nome ou email..." [(ngModel)]="searchTerm" (input)="onSearch(searchTerm)" />
+    </div>
   </div>
 
   <div class="table-card">
-    <app-table
-      [columns]="userColumns"
-      [data]="paginatedUsers"
-      [actions]="userActions"
-      [loading]="loading"
-      [hoverable]="true"
-      emptyMessage="Nenhum usuário encontrado"
-      (rowClick)="onRowClick($event)">
-    </app-table>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Função</th>
+          <th>Contato</th>
+          <th>Email</th>
+          <th>Situação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of paginatedUsers; track user.id) {
+          <tr class="table-row">
+            <td>
+              <div class="user-cell">
+                <img [src]="user.avatar" [alt]="user.name" class="user-avatar" />
+                <div class="user-info">
+                  <span class="user-name">{{ user.name }}</span>
+                  <span class="user-id">ID: {{ user.id }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="role-badge" [class.role-admin]="user.role === 'Admin'" [class.role-organizador]="user.role === 'Organizador'">
+                {{ user.role }}
+              </span>
+            </td>
+            <td class="text-secondary">{{ user.phone }}</td>
+            <td class="text-secondary">{{ user.email }}</td>
+            <td>
+              <span class="status-badge" [class.status-ativo]="user.status === 'Ativo'" [class.status-inativo]="user.status === 'Inativo'">
+                <span class="status-dot"></span>
+                {{ user.status }}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button class="action-btn" (click)="onEdit(user)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button class="action-btn action-danger" (click)="onDelete(user)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
     <div class="table-footer">
       <span class="results-count">{{ displayCount }}</span>
-
-      <app-pagination
-        [currentPage]="currentPage"
-        [totalPages]="totalPages"
-        [maxVisiblePages]="5"
-        (pageChange)="onPageChange($event)">
-      </app-pagination>
+      <div class="pagination">
+        <button class="page-btn" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        @for (page of pageNumbers; track page) {
+          <button class="page-btn" [class.active]="page === currentPage" (click)="onPageChange(page)">{{ page }}</button>
+        }
+        <button class="page-btn" [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
-<app-modal
-  [isOpen]="isModalOpen"
-  title="Cadastrar Novo Usuário"
-  (close)="onCloseModal()">
-  <form class="user-form">
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Nome</label>
-        <input
-          type="text"
-          class="form-input"
-          placeholder="Digite o nome"
-          [(ngModel)]="newUser.firstName"
-          name="firstName">
+@if (isModalOpen) {
+  <div class="modal-overlay" (click)="onCloseModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">Novo Usuário</h2>
+        <button class="modal-close" (click)="onCloseModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
-
-      <div class="form-group">
-        <label class="form-label">Sobrenome</label>
-        <input
-          type="text"
-          class="form-input"
-          placeholder="Digite o sobrenome"
-          [(ngModel)]="newUser.lastName"
-          name="lastName">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nome</label>
+            <input type="text" class="form-input" placeholder="Digite o nome" [(ngModel)]="newUser.firstName" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sobrenome</label>
+            <input type="text" class="form-input" placeholder="Digite o sobrenome" [(ngModel)]="newUser.lastName" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Função</label>
+          <select class="form-input" [(ngModel)]="newUser.role">
+            <option value="">Selecione a função</option>
+            <option value="admin">Administrador</option>
+            <option value="organizador">Organizador</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="exemplo@email.com" [(ngModel)]="newUser.email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefone</label>
+          <input type="tel" class="form-input" placeholder="(00) 00000-0000" [(ngModel)]="newUser.phone" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">CPF / CNPJ</label>
+          <input type="text" class="form-input" placeholder="Digite o documento" [(ngModel)]="newUser.document" />
+        </div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <app-dropdown
-        label="Grupo de Acesso / Permissões"
-        [options]="roleOptions"
-        placeholder="Selecione o tipo de acesso"
-        (selectionChange)="onRoleChange($event)">
-      </app-dropdown>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">E-mail</label>
-      <input
-        type="email"
-        class="form-input"
-        placeholder="exemplo@email.com"
-        [(ngModel)]="newUser.email"
-        name="email">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Número de Telefone</label>
-      <input
-        type="tel"
-        class="form-input"
-        placeholder="(00) 00000-0000"
-        [(ngModel)]="newUser.phone"
-        name="phone">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">CRECI / CNPJ / CPF</label>
-      <input
-        type="text"
-        class="form-input"
-        placeholder="Digite o documento"
-        [(ngModel)]="newUser.document"
-        name="document">
-    </div>
-
-    <div class="form-actions">
-      <app-button
-        text="Cancelar"
-        variant="ghost"
-        (onClick)="onCloseModal()">
-      </app-button>
-
-      <app-button
-        text="Cadastrar Usuário"
-        variant="primary"
-        (onClick)="onSubmitNewUser()">
-      </app-button>
-    </div>
-  </form>
-</app-modal>
-
-<ng-template #nameTemplate let-row>
-  <div class="user-cell">
-    <img [src]="row.avatar" [alt]="row.name" class="user-avatar">
-    <div class="user-info">
-      <span class="user-name">{{ row.name }}</span>
-      <span class="user-id">ID: {{ row.id }}</span>
+      <div class="modal-footer">
+        <button class="btn-outline" (click)="onCloseModal()">Cancelar</button>
+        <button class="btn-primary" (click)="onSubmitNewUser()">Cadastrar</button>
+      </div>
     </div>
   </div>
-</ng-template>
-
-<ng-template #roleTemplate let-row let-value="value">
-  <span 
-    class="role-badge" 
-    [class.role-admin]="value === 'Admin'" 
-    [class.role-broker]="value === 'Corretor'">
-    {{ value }}
-  </span>
-</ng-template>
-
-<ng-template #statusTemplate let-row let-value="value">
-  <span 
-    class="status-badge" 
-    [class.status-active]="value === 'Ativo'" 
-    [class.status-inactive]="value === 'Inativo'">
-    <span class="status-dot"></span>
-    {{ value }}
-  </span>
-</ng-template>
+}
